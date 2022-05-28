@@ -28,6 +28,95 @@
   color: #61dafb;
 }
 
+.myForm {
+  width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pagination {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.l-navbar {
+  position: fixed;
+  top: 0;
+  left: -30%;
+  width: var(--nav-width);
+  height: 100vh;
+  padding: 0.5rem 1rem 0 0;
+  transition: 0.5s;
+  z-index: var(--z-fixed);
+}
+
+.nav {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  background-color: whitesmoke;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  color: black;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #5f2323;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+  cursor: pointer;
+}
+
+.sidenav .closebtnRight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 36px;
+  margin-right: 50px;
+  cursor: pointer;
+}
+
+.sidenav .enabled {
+  cursor: pointer;
+}
+
+.sidenav .disabled {
+  pointer-events: none;
+  color: grey;
+  cursor: default;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
