@@ -43,7 +43,7 @@ const Feed = () => {
 
   return (
     <>
-      <Navbar/>
+      <Navbar data={state.filter}/>
       <div className="container mt-3">
       { 
         state.data.vouchers.map((data) => (

@@ -3,7 +3,6 @@ let url = process.env.REACT_APP_API_URL
 const Swal = require('sweetalert2')
 
 export const fetchData=(page, filter)=>{
-  console.log(filter)
   let filterData = {
     poinFrom: '',
     poinTo: '',
@@ -11,14 +10,14 @@ export const fetchData=(page, filter)=>{
   }
   if (Object.keys(filter).length > 0) {
     if (filter.poinFrom) filterData.poinFrom = filter.poinFrom
-    if (filter.poinTo) filterData.poinTo = filter.poinTo
+    if (filter.poinTo && filter.poinTo > 10000) filterData.poinTo = filter.poinTo
     if (filter.typeArray.length > 0) {
-      filterData.typeString = filter.typeArray.join()
+      filterData.stringType = filter.typeArray.filter(x => x !== 'All').join();
     }
   }
-  console.log(filterData, 'ss')
+  
   return (dispatch) => {
-    fetch(url+`/awards?page=${page}&size=3&poinFrom=${filterData.poinFrom}&poinTo=${filterData.poinFrom}&type=${filterData.stringType}`)
+    fetch(url+`/awards?page=${page}&size=3&poinFrom=${filterData.poinFrom}&poinTo=${filterData.poinTo}&type=${filterData.stringType}`)
       .then(response => response.json())
       .then(data => {
         dispatch({
@@ -51,7 +50,6 @@ export const signIn=(email, navigate)=>{
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         if (data.status === 404) {
           Swal.fire({
             title: 'Error!',
@@ -70,10 +68,10 @@ export const signIn=(email, navigate)=>{
 export const filterData=(filter)=>{
   let typeString = ''
   if (filter.typeArray.length > 0) {
-    typeString = filter.typeArray.join()
+    typeString = filter.typeArray.filter(x => x !== 'All').join();
   }
   return (dispatch) => {
-    fetch(url+`/awards?page=0&size=3&poinFrom=${filter.poinFrom}&poinTo=${filter.poinTo}&type=${typeString}`)
+    fetch(url+`/awards?page=0&size=3&poinFrom=${filter.poinFrom}&poinTo=${filter.poinTo > 10000 ? filter.poinTo : ''}&type=${typeString}`)
       .then(response => response.json())
       .then(data => {
         dispatch({

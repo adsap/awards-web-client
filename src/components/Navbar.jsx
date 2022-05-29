@@ -5,22 +5,22 @@ import { useNavigate } from "react-router-dom"
 import { useDispatch } from 'react-redux'
 import { filterData } from '../store/actionCreator'
 
-const Navbar = () => {
+const Navbar = (filter) => {
   const leftNavRef = useRef(null)
   const rightNavRef = useRef(null)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const poinFrom = 10000
-  let [poinTo, setPoinTo] = useState(10000)
+  let [poinTo, setPoinTo] = useState(filter.data.poinTo ? filter.data.poinTo : 10000)
   let [typeValue, setTypeValue] = useState({
-    All : false,
-    Vouchers: false,
-    Products: false,
-    Others: false
+    All : filter.data.typeArray && filter.data.typeArray.includes('All') ? true : false,
+    Vouchers: filter.data.typeArray && filter.data.typeArray.includes('Vouchers') ? true : false,
+    Products: filter.data.typeArray && filter.data.typeArray.includes('Products') ? true : false,
+    Others: filter.data.typeArray && filter.data.typeArray.includes('Giftcard') ? true : false
   })
   let [filterCheck, setFilterCheck] = useState({
-    poin: false,
-    type: false
+    poin: filter.data.poinTo > 10000 ? true : false,
+    type: filter.data.typeArray && filter.data.typeArray.length > 0 ? true : false
   })
 
 
@@ -72,7 +72,19 @@ const Navbar = () => {
         Others: checked
       })
     } else {
-      setTypeValue({...typeValue, [name]:checked})
+      if (!checked) {
+        setTypeValue({...typeValue, All:checked, [name]:checked})
+      } else {
+        let isAll = true
+        for (const key in typeValue) {
+          if (key !== name && key !== 'All' && !typeValue[key]) {
+            isAll = false
+            break
+          }
+        }
+        if (isAll) setTypeValue({...typeValue, All:checked, [name]:checked})
+        else setTypeValue({...typeValue, [name]:checked})
+      }
     }
     let flag = true
     if (checked) {
@@ -121,9 +133,6 @@ const Navbar = () => {
   const onClickFilter = () => {
     let typeArray = []
     for (const key in typeValue) {
-      if (key === 'All' && typeValue[key]) {
-        break
-      }
       if (typeValue[key]) {
         if (key === 'Others') {
           typeArray.push('Giftcard')
